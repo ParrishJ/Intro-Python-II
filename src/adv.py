@@ -1,4 +1,5 @@
 from room import Room
+from player import Player
 
 # Declare all the rooms
 
@@ -49,3 +50,27 @@ room['treasure'].s_to = room['narrow']
 # Print an error message if the movement isn't allowed.
 #
 # If the user enters "q", quit the game.
+
+JP = Player('JP', 'outside')
+
+def navigation():
+    JP.set_room(room[JP.current_room])
+    print('You are in:', JP.current_room.name)
+    print('you see', JP.current_room.description) 
+    direction = str(input("[n] North [e] East [s] South [w] West [q] Quit \n"))
+    while not direction == 'q':
+        if direction == 'n':
+            JP.set_room(JP.current_room.n_to)
+            print(JP.current_room)
+        if direction == 'e':
+            JP.set_room(JP.current_room.e_to)
+            print(JP.current_room)
+        if direction == 's':
+            JP.set_room(JP.current_room.s_to)
+            print(JP.current_room)
+        if direction == 'w':
+            JP.set_room(JP.current_room.w_to)
+            print(JP.current_room)
+        direction = str(input("[n] North [e] East [s] South [w] West [q] Quit \n"))
+
+navigation()
