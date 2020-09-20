@@ -1,26 +1,34 @@
 from room import Room
 from player import Player
+from food import Food
+
+# Items
+
+stale_bread = Food("Stale Bread", "an old, crumbly slice of bread", "Disgusting")
+
+apple = Food("Apple", "a ripe, juicy apple", "Delicious")
 
 # Declare all the rooms
 
 room = {
     'outside':  Room("Outside Cave Entrance",
-                     "North of you, the cave mount beckons"),
+                     "North of you, the cave mount beckons", [apple]),
 
     'foyer':    Room("Foyer", """Dim light filters in from the south. Dusty
-passages run north and east."""),
+passages run north and east.""", [stale_bread, apple]),
 
     'overlook': Room("Grand Overlook", """A steep cliff appears before you, falling
 into the darkness. Ahead to the north, a light flickers in
-the distance, but there is no way across the chasm."""),
+the distance, but there is no way across the chasm.""", [stale_bread]),
 
     'narrow':   Room("Narrow Passage", """The narrow passage bends here from west
-to north. The smell of gold permeates the air."""),
+to north. The smell of gold permeates the air.""", [apple]),
 
     'treasure': Room("Treasure Chamber", """You've found the long-lost treasure
 chamber! Sadly, it has already been completely emptied by
-earlier adventurers. The only exit is to the south."""),
+earlier adventurers. The only exit is to the south.""", [apple]),
 }
+
 
 
 # Link rooms together
@@ -51,14 +59,19 @@ room['treasure'].s_to = room['narrow']
 #
 # If the user enters "q", quit the game.
 
-JP = Player('JP', 'outside')
+JP = Player('JP', 'outside', None)
 
 def navigation():
     JP.set_room(room[JP.current_room])
-    print('You are in:', JP.current_room.name)
-    print('you see', JP.current_room.description) 
-    direction = str(input("[n] North [e] East [s] South [w] West [q] Quit \n"))
+    print('You find yourself in a new area:', JP.current_room.name)
+    print(JP.current_room.description) 
+    direction = str(input("[n] North [e] East [s] South [w] West, [p] Pickup, [q] Quit \n"))
     while not direction == 'q':
+        if direction == 'p':
+            pickup_item_str = str(input("Enter Item Name To Pickup \n").lower())
+            for item in JP.current_room.items:
+                if pickup_item_str == item.name.lower():
+                    JP.get_item(item)
         if direction == 'n':
             JP.set_room(JP.current_room.n_to)
             print(JP.current_room)
@@ -71,6 +84,6 @@ def navigation():
         if direction == 'w':
             JP.set_room(JP.current_room.w_to)
             print(JP.current_room)
-        direction = str(input("[n] North [e] East [s] South [w] West [q] Quit \n"))
+        direction = str(input("[n] North [e] East [s] South [w] West [p] Pickup [q] Quit \n"))
 
 navigation()
