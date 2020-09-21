@@ -3,5 +3,11 @@ class Item:
         self.name = name
         self.description = description
 
+    def on_take(self):
+        print(f"You now Hold: {self.name}")
+
+    def on_drop(self):
+        print(f"You dropped: {self.name}")
+
     def __str__(self):
          return f"Item: {self.name}, Description: {self.description}"

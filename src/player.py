@@ -14,11 +14,14 @@ class Player:
 
     def get_item(self, new_item):
         self.inventory.append(new_item)
-        print(f"You now Hold: {'; '.join(map(str, self.inventory))}.")
+        new_item.on_take()
 
     def drop_item(self, dropped_item):
         self.inventory.remove(dropped_item)
-        print(f"You now Hold: {'; '.join(map(str, self.inventory))}.")
+        dropped_item.on_drop()
+
+    def get_inventory(self):
+        print(f"You Hold: {'; '.join(map(str, self.inventory))}.")
 
     def __repr__(self):
         return f"Name: {self.name}, Current Room: {self.current_room}"
